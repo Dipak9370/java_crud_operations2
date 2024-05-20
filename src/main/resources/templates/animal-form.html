@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Animal Form</title>
+    <!-- Link to an external CSS stylesheet -->
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <!-- JavaScript function to validate form inputs -->
+    <script>
+        function validateForm() {
+            // Get values of form inputs
+            var name = document.getElementById("name").value;
+            var category = document.getElementById("category").value;
+            var description = document.getElementById("description").value;
+            var lifeExpectancy = document.getElementById("lifeExpectancy").value;
+            var captchaResponse = document.getElementById("captchaResponse").value;
+
+            // Check if any field is empty
+            if (name === "" || category === "" || description === "" || lifeExpectancy === "" || captchaResponse === "") {
+                alert("All fields are required."); // Alert if any field is empty
+                return false; // Prevent form submission
+            }
+
+            // Evaluate the captcha math expression
+            var captcha = document.getElementById("captcha").innerHTML;
+            var captchaAnswer = eval(captcha); // Evaluate the math expression
+            if (captchaResponse != captchaAnswer) {
+                alert("Captcha verification failed."); // Alert if captcha verification fails
+                return false; // Prevent form submission
+            }
+
+            return true; // Allow form submission if validation passes
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Main heading of the webpage -->
+    <h1>Animal Form</h1>
+    <!-- Form to add or edit an animal -->
+    <form th:action="@{/animals}" th:object="${animal}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <input type="hidden" th:field="*{id}"> <!-- Hidden field for animal ID -->
+        <!-- Input field for animal name -->
+        <div>
+            <label>Name:</label>
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <!-- Dropdown menu for animal category -->
+        <div>
+            <label>Category:</label>
+            <select id="category" th:field="*{category}" required>
+                <option value="">Select category</option>
+                <option value="Mammal">Mammal</option>
+                <option value="Bird">Bird</option>
+                <option value="Fish">Fish</option>
+                <option value="Reptile">Reptile</option>
+            </select>
+        </div>
+        <!-- Input field for animal image -->
+        <div>
+            <label>Image:</label>
+            <input type="file" name="imageFile">
+        </div>
+        <!-- Textarea for animal description -->
+        <div>
+            <label>Description:</label>
+            <textarea id="description" th:field="*{description}" required></textarea>
+        </div>
+        <!-- Dropdown menu for animal life expectancy -->
+        <div>
+            <label>Life Expectancy:</label>
+            <select id="lifeExpectancy" th:field="*{lifeExpectancy}" required>
+                <option value="">Select life expectancy range</option>
+                <option value="2-5">2-5</option>
+                <option value="5-10">5-10</option>
+                <option value="10-15">10-15</option>
+                <option value="15-20">15-20</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Captcha:</label>
+            <span id="captcha"></span> <!-- Span element to display captcha math expression -->
+            <input type="text" id="captchaResponse" required> <!-- Input field for user's response -->
+        </div>
+        <!-- Button to submit the form -->
+        <div>
+            <button type="submit">Save</button>
+        </div>
+    </form>
+    <!-- JavaScript to generate and display a captcha math challenge -->
+    <script>
+        var num1 = Math.floor(Math.random() * 10);
+        var num2 = Math.floor(Math.random() * 10);
+        document.getElementById("captcha").innerHTML = num1 + " + " + num2; // Display captcha math challenge
+    </script>
+</body>
+
+</html>

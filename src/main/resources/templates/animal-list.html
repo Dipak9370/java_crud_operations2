@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Title of the webpage -->
+    <title>Animal List</title>
+    <!-- Link to an external CSS stylesheet -->
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- Main heading of the webpage -->
+    <h1>Animal List</h1>
+    <!-- Link to add a new animal -->
+    <a href="/animals/new">Add New Animal</a>
+    <!-- Table to display the list of animals -->
+    <table>
+        <thead>
+            <tr>
+                <!-- Table headers with sorting links -->
+                <th><a href="?sort=name">Name</a></th>
+                <th><a href="?sort=category">Category</a></th>
+                <th><a href="?sort=lifeExpectancy">Life Expectancy</a></th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through the list of animals and display each animal's details -->
+            <tr th:each="animal : ${animals}">
+                <td th:text="${animal.name}">Name</td>
+                <td th:text="${animal.category}">Category</td>
+                <td th:text="${animal.lifeExpectancy}">Life Expectancy</td>
+                <td>
+                    <!-- Links to edit and delete the animal -->
+                    <a th:href="@{/animals/edit/{id}(id=${animal.id})}">Edit</a>
+                    <a th:href="@{/animals/delete/{id}(id=${animal.id})}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
+
+
