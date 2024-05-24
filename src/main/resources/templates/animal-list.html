@@ -14,11 +14,11 @@
     <!-- Link to add a new animal -->
     <a href="/animals/new">Add New Animal</a>
     <!-- Table to display the list of animals -->
-    <table>
+    <table id="myTable">
         <thead>
             <tr>
                 <!-- Table headers with sorting links -->
-                <th><a href="?sort=name">Name</a></th>
+                <th><a href="?sort=name">Animal Name</a></th>
                 <th><a href="?sort=category">Category</a></th>
                 <th><a href="?sort=lifeExpectancy">Life Expectancy</a></th>
                 <th>Actions</th>
@@ -27,9 +27,9 @@
         <tbody>
             <!-- Loop through the list of animals and display each animal's details -->
             <tr th:each="animal : ${animals}">
-                <td th:text="${animal.name}">Name</td>
-                <td th:text="${animal.category}">Category</td>
-                <td th:text="${animal.lifeExpectancy}">Life Expectancy</td>
+                <td onclick="sortTable(0)" th:text="${animal.name}">Name</td>
+                <td onclick="sortTable(1)" th:text="${animal.category}">Category</td>
+                <td onclick="sortTable(2)" th:text="${animal.lifeExpectancy}">Life Expectancy</td>
                 <td>
                     <!-- Links to edit and delete the animal -->
                     <a th:href="@{/animals/edit/{id}(id=${animal.id})}">Edit</a>
@@ -38,6 +38,31 @@
             </tr>
         </tbody>
     </table>
+    
+<script>
+function sortTable(colIndex) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("myTable");
+  switching = true;
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    for (i = 1; i < (rows.length - 1); i++) {
+      shouldSwitch = false;
+      x = rows[i].getElementsByTagName("td")[colIndex];
+      y = rows[i + 1].getElementsByTagName("td")[colIndex];
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+</script>
 </body>
 
 </html>

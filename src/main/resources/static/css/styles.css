@@ -80,13 +80,13 @@ td {
 }
 
 th {
-    background-color: #007bff;
+    background-color: blue;
     color: white;
 }
 
 /* Styling for links */
 a {
-    color: #007bff;
+    color: orange;
     text-decoration: none;
 }
 
